@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------------- */
+/*  Design tokens                                                             */
+/* ------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    /* Self-hosted variable fonts (see app/layout.tsx). */
+    --font-inter: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system,
+      'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+    --font-display: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', 'Inter Variable',
+      ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+    --bg: 250 250 252;
+    --surface: 255 255 255;
+    --surface-2: 244 244 248;
+    --fg: 15 15 20;
+    --muted: 96 96 112;
+    --line: 15 15 20;
+    --line-alpha: 0.09;
+    --glass: 255 255 255;
+    --glass-alpha: 0.72;
+    --shadow-color: 15 15 40;
+    color-scheme: light;
+  }
+
+  .dark {
+    --bg: 8 8 12;
+    --surface: 16 16 22;
+    --surface-2: 23 23 31;
+    --fg: 244 244 247;
+    --muted: 150 150 168;
+    --line: 255 255 255;
+    --line-alpha: 0.1;
+    --glass: 22 22 30;
+    --glass-alpha: 0.66;
+    --shadow-color: 0 0 0;
+    color-scheme: dark;
+  }
+
+  * {
+    @apply border-line/10;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Visible, consistent focus ring for keyboard users everywhere. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-purple ring-offset-2 ring-offset-bg;
+    border-radius: 0.5rem;
+  }
+
+  ::selection {
+    background: rgb(139 92 246 / 0.32);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Number-ish inputs: keep spinners but make them unobtrusive */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    opacity: 0.55;
+  }
+
+  /* Custom scrollbars */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--muted) / 0.35);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--muted) / 0.6);
+    background-clip: padding-box;
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Component utilities                                                      */
+/* ------------------------------------------------------------------------- */
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Glassmorphism card */
+  .glass {
+    background: rgb(var(--glass) / var(--glass-alpha));
+    border: 1px solid rgb(var(--line) / 0.1);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.05),
+      0 20px 40px -28px rgb(var(--shadow-color) / 0.35);
+  }
+
+  .card {
+    @apply rounded-2xl border border-line/10 bg-surface;
+  }
+
+  .gradient-text {
+    @apply bg-brand-gradient bg-clip-text text-transparent;
+    background-size: 200% 200%;
+  }
+
+  .gradient-bar {
+    @apply h-1 w-full rounded-full bg-brand-gradient;
+  }
+
+  /* Section heading helper */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-line/10 bg-surface/60 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-muted;
+  }
+
+  /* Prose used by blog + long-form tool content */
+  .prose-nova {
+    @apply text-[15px] leading-7 text-muted;
+  }
+  .prose-nova h2 {
+    @apply mb-3 mt-8 font-display text-xl font-bold text-fg;
+  }
+  .prose-nova h3 {
+    @apply mb-2 mt-6 font-display text-base font-semibold text-fg;
+  }
+  .prose-nova p {
+    @apply mb-4;
+  }
+  .prose-nova ul {
+    @apply mb-4 list-disc space-y-2 pl-5;
+  }
+  .prose-nova ol {
+    @apply mb-4 list-decimal space-y-2 pl-5;
+  }
+  .prose-nova a {
+    @apply font-medium text-fg underline decoration-brand-purple/60 underline-offset-4 hover:decoration-brand-red;
+  }
+  .prose-nova strong {
+    @apply font-semibold text-fg;
+  }
+  .prose-nova code {
+    @apply rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[13px] text-fg;
+  }
+  .prose-nova pre {
+    @apply mb-4 overflow-x-auto rounded-xl border border-line/10 bg-surface-2 p-4 font-mono text-[13px] text-fg;
+  }
+
+  /* Ambient background blobs / grid */
+  .bg-aurora::before {
+    content: '';
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 620px;
+    background:
+      radial-gradient(45% 55% at 20% 30%, rgb(255 58 94 / 0.22) 0%, transparent 70%),
+      radial-gradient(40% 50% at 78% 22%, rgb(139 92 246 / 0.26) 0%, transparent 70%),
+      radial-gradient(35% 45% at 52% 60%, rgb(217 70 239 / 0.14) 0%, transparent 70%);
+    filter: blur(28px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-mesh {
+    background-image: radial-gradient(rgb(var(--line) / 0.09) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  /* Skeleton / shimmer */
+  .skeleton {
+    @apply relative overflow-hidden rounded-lg bg-surface-2;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--fg) / 0.06),
+      transparent
+    );
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .tap-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}
